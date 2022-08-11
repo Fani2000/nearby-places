@@ -1,13 +1,19 @@
 <template>
-  <q-item class="q-px-sm" clickable v-ripple>
+  <q-item class="q-px-sm" @click="selectPlaceHandler" clickable v-ripple>
     <q-item-section avatar top>
       <q-avatar icon="place" color="grey" text-color="white" />
     </q-item-section>
 
     <q-item-section>
-      <q-item-label lines="1">{{
-        placeInformation.address.freeformAddress
-      }}</q-item-label>
+      <q-item-label lines="1">
+        {{ placeInformation.address.freeformAddress }}
+        <q-tooltip
+          anchor="center right"
+          :offset="[-150, 0]"
+          self="center right"
+          >{{ placeInformation.address.freeformAddress }}</q-tooltip
+        >
+      </q-item-label>
       <q-item-label caption>{{
         placeInformation.address.localName
       }}</q-item-label>
@@ -26,11 +32,24 @@
 </template>
 
 <script lang="ts">
+import { useAppState } from "../store/appState";
 export default {
   setup(props: { placeInformation: {} }) {
     const placeInformation = props?.placeInformation;
+    const appState = useAppState();
+    const selectPlaceHandler = () => {
+      // appState.add
+      console.log(placeInformation);
+      appState.addDestinationLocation(placeInformation.position);
+      appState.addDestinationInformation({
+        address: placeInformation?.address,
+        score: placeInformation.score,
+      });
+      appState.toggleSidebar();
+    };
     return {
       placeInformation,
+      selectPlaceHandler,
     };
   },
   props: ["placeInformation"],

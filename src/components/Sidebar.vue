@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import { onMounted, ref, watch } from "vue";
+import { useAppState } from "../store/appState";
 import { pointsOfInterests as pointOfInterestsRes } from "../Utils/TomTomServicesApi";
 import Place from "./Place.vue";
 
@@ -33,11 +34,14 @@ export default {
     const pointsOfInterests = ref([]);
     const searchTerm = ref("");
     const loading = ref(false);
+    const appState = useAppState();
 
     const searchMethod = async () => {
       if (searchTerm.value.length <= 0) return;
+
       const poi = await pointOfInterestsRes.getPointsOfInterest(
-        searchTerm.value
+        searchTerm.value,
+        { lat: appState.myLocation.lat, lng: appState.myLocation.lon }
       );
       pointsOfInterests.value = poi;
     };

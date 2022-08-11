@@ -38,6 +38,7 @@ class CalculateRoutePoints extends TomTomServicesAPI {
     this.typeUrl += `${point1.lat},${point1.lng}:${point2.lat},${point2.lng}/json?key=${this.apiKey}`;
 
     const fullUrl = this.baseURL + this.typeUrl;
+    console.log(fullUrl);
 
     const CustomAxios = new AxiosWrapper(fullUrl);
 
@@ -57,8 +58,8 @@ class PointsOfInterest extends TomTomServicesAPI {
     super();
   }
 
-  async getPointsOfInterest(query: String) {
-    this.url = `${this.baseURL}search/2/poiSearch/${query}.json?key=${this.apiKey}`;
+  async getPointsOfInterest(query: String, point: Coordinate) {
+    this.url = `${this.baseURL}search/2/poiSearch/${query}.json?key=${this.apiKey}&lat=${point.lat}&lon=${point.lng}`;
     const CustomAxios = new AxiosWrapper(this.url);
     const poiRes = await CustomAxios.getData();
 
