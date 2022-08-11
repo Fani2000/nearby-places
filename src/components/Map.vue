@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { onMounted, ref, watch } from "vue";
-import { CalculateRoutePoints } from "../Utils/TomTomServicesApi";
+import { calculateRoute } from "../Utils/TomTomServicesApi";
 
 interface Coordinate {
   lat: Number;
@@ -13,15 +13,14 @@ interface Coordinate {
 
 export default {
   props: ["coords"],
-  setup(props) {
+  setup(props: {}) {
     let map;
     let point1: Coordinate = { lat: 52.50931, lng: 13.42936 };
     let point2: Coordinate = { lat: 52.50274, lng: 13.43872 };
     let routeData: [Object] = ref([]);
 
     const getData = async () => {
-      const routePoint = new CalculateRoutePoints(point1, point2);
-      const data = await routePoint.getRoutePoints();
+      const data = await calculateRoute.getRoutePoints(point1, point2);
       // return data;
       if (data.error) return;
 

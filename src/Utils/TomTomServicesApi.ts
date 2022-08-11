@@ -29,20 +29,21 @@ abstract class TomTomServicesAPI {
 
 class CalculateRoutePoints extends TomTomServicesAPI {
   private typeUrl = "routing/1/calculateRoute/";
-  fullUrl = "";
 
-  constructor(point1: Coordinate, point2: Coordinate) {
+  constructor() {
     super();
-    this.typeUrl += `${point1.lat},${point1.lng}:${point2.lat},${point2.lng}/json?key=${this.apiKey}`;
-    this.fullUrl = this.baseURL + this.typeUrl;
   }
 
-  async getRoutePoints() {
-    const CustomAxios = new AxiosWrapper(this.fullUrl);
-    // console.log(this.fullUrl);
+  async getRoutePoints(point1: Coordinate, point2: Coordinate) {
+    this.typeUrl += `${point1.lat},${point1.lng}:${point2.lat},${point2.lng}/json?key=${this.apiKey}`;
+
+    const fullUrl = this.baseURL + this.typeUrl;
+
+    const CustomAxios = new AxiosWrapper(fullUrl);
+
     const routeRes = await CustomAxios.getData();
 
-    if (routeRes.status !== 200) return { error: "The data can't be found" };
+    if (routeRes.status !== 200) return { error: routeRes.error };
 
     const routes = routeRes.data?.routes;
 
@@ -54,9 +55,22 @@ class PointsOfInterest extends TomTomServicesAPI {
   url = "";
   constructor() {
     super();
-    this.url = `${this.baseURL}search/2/poiSearch/pizza.json?key=${this.apiKey}`;
-    console.log(this.url);
+  }
+
+  async getPointsOfInterest(query: String) {
+    this.url = `${this.baseURL}search/2/poiSearch/${query}.json?key=${this.apiKey}`;
+    const CustomAxios = new AxiosWrapper(this.url);
+    const poiRes = await CustomAxios.getData();
+
+    if (poiRes.status !== 200) return { error: poiRes.error };
+
+    const poi = poiRes.data?.results;
+
+    return poi;
   }
 }
 
-export { CalculateRoutePoints, PointsOfInterest };
+const calculateRoute = new CalculateRoutePoints();
+const pointsOfInterests = new PointsOfInterest();
+
+export { calculateRoute, pointsOfInterests };
