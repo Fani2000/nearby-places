@@ -6,6 +6,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useAppState } from "../store/appState";
 import { calculateRoute } from "../Utils/TomTomServicesApi";
+import location from "../assets/location.png";
 
 interface Coordinate {
   lat: Number;
@@ -59,7 +60,12 @@ export default {
         attribution: "© OpenStreetMap",
       }).addTo(map);
 
-      L.marker([lat, lon])
+      L.marker([lat, lon], {
+        icon: L.icon({
+          iconUrl: location,
+          iconSize: [40, 40],
+        }),
+      })
         .addTo(map)
         .bindPopup(L.popup({ autoClose: false }))
         .setPopupContent("Your Current Location")
