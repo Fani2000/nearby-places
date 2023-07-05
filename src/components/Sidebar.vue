@@ -43,6 +43,7 @@ export default {
         searchTerm.value,
         { lat: appState.myLocation.lat, lng: appState.myLocation.lon }
       );
+      // console.log(poi)
       pointsOfInterests.value = poi;
     };
     return { pointsOfInterests, searchTerm, searchMethod };

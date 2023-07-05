@@ -24,32 +24,39 @@
   </q-layout>
 </template>
 
-<script>
+<script setup>
+import { storeToRefs } from "pinia";
 import Map from "../components/Map.vue";
 import Sidebar from "../components/Sidebar.vue";
 import { useAppState } from "../store/appState";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
-export default {
-  components: { Map, Sidebar },
-  setup() {
-    const appState = useAppState();
-    const sidebar = ref(false);
+// export default {
+//   components: { Map, Sidebar },
+//   setup() {
+const appState = useAppState();
+const sidebar = ref(false);
 
-    appState.$subscribe((state) => {
-      console.log(state.events.target);
-      sidebar.value = state.events.target.sideBar;
-      // console.log(sidebar.value);
-    });
+const { sideBar } = storeToRefs(appState);
 
-    const toggleSidebar = () => {
-      appState.toggleSidebar();
-      // sidebar.value = appState.sideBar;
-    };
-    return {
-      sidebar,
-      toggleSidebar,
-    };
-  },
+watch(sideBar, (newSideBar) => {
+  sidebar.value = newSideBar;
+});
+
+// appState.$subscribe((state) => {
+//   console.log(state.events.target);
+//   sidebar.value = state.events.target.sideBar;
+//   // console.log(sidebar.value);
+// });
+
+const toggleSidebar = () => {
+  appState.toggleSidebar();
+  // sidebar.value = appState.sideBar;
 };
+// return {
+//   sidebar,
+//   toggleSidebar,
+// };
+//   },
+// };
 </script>

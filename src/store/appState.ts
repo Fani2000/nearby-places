@@ -5,20 +5,20 @@ interface Coordinate {
   lon: Number;
 }
 
-export const useAppState = defineStore("main", {
-  state: () => {
-    let myLocation: Coordinate = {};
-    let destination: Coordinate = {};
-    let destinationInformation: any = {};
-    let sideBar: Boolean = false;
+export type RootType = {
+  myLocation: Coordinate;
+  destination: Coordinate;
+  destinationInformation: any;
+  sideBar: Boolean;
+};
 
-    return {
-      myLocation,
-      destination,
-      destinationInformation,
-      sideBar,
-    };
-  },
+export const useAppState = defineStore("main", {
+  state: () => ({
+    myLocation: {} as Coordinate,
+    destination: {} as Coordinate,
+    destinationInformation: {} as any,
+    sideBar: false as Boolean,
+  }),
   actions: {
     toggleSidebar() {
       this.sideBar = !this.sideBar;

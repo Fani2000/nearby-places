@@ -7,11 +7,14 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useAppState } from "../store/appState";
 import { calculateRoute } from "../Utils/TomTomServicesApi";
 import location from "../assets/location.png";
+import L from "leaflet";
+import "leaflet.polyline.snakeanim";
 
 interface Coordinate {
   lat: Number;
   lon: Number;
 }
+
 
 export default {
   setup() {
@@ -106,13 +109,13 @@ export default {
 
     watch(routeData, (route) => {
       // console.log(route);
-      const line = L.polyline(route, {
+      const line = L.polyline(routeData.value, {
         color: "orange",
-        snakingSpeed: 200,
+        // snakingSpeed: 200,
       });
       map.fitBounds(line.getBounds());
 
-      line.addTo(map).snakeIn();
+      line.addTo(map);
 
       L.marker(route[0][route[0].length - 1])
         .bindPopup(L.popup({ autoClose: false }))

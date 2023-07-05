@@ -33,14 +33,24 @@
 
 <script lang="ts">
 import { useAppState } from "../store/appState";
+
+interface PlaceInformation {
+  position: {
+    lat: Number;
+    lon: Number;
+  };
+  address: String;
+  score: Number;
+}
+
 export default {
-  setup(props: { placeInformation: {} }) {
+  setup(props: { placeInformation: PlaceInformation }) {
     const placeInformation = props?.placeInformation;
     const appState = useAppState();
     const selectPlaceHandler = () => {
       // appState.add
       console.log(placeInformation);
-      appState.addDestinationLocation(placeInformation.position);
+      appState.addDestinationLocation(placeInformation?.position);
       appState.addDestinationInformation({
         address: placeInformation?.address,
         score: placeInformation.score,
